@@ -166,7 +166,7 @@ def holiday_management():
     def add_holiday():
         title = input("Enter holiday title: ")
         day, month, year = map(int, input(f"Enter Date for {title} in DD/MM/YY: ").split('/'))
-        new_holiday = {"Title": title, "Date": datetime.datetime(year, month, day), "Month": month}
+        new_holiday = {"Title": title, "Date": datetime.datetime(year, month, day).strftime("%y/%m/%d"), "Month": month}
         myHoliday.insert_one(new_holiday)
 
         # my_data = myAttendance.find({})
@@ -181,13 +181,14 @@ def holiday_management():
     def display_holiday():
         print("\n------ List of Holidays ------")
         for x in myHoliday.find():
-            print(x['Date'].date(), " : ", x['Title'], sep="")
+            print(x['Date'], " : ", x['Title'], sep="")
 
     def display_holiday_month():
-        month = input("Enter month (MM) to display holidays: ")
+        month = int(input("Enter month (MM) to display holidays: "))
         print("\n------ List of Holidays ------")
-        for x in myHoliday.find({"Month": month}):
-            print(x['Date'].date(), " : ", x['Title'], sep="")
+        for x in myHoliday.find({}):
+            if x["Month"] == month:
+                print(x['Date'], " : ", x['Title'], sep="")
 
     try:
         sub_menu_hol()
