@@ -266,7 +266,6 @@ def switch_example(argument):
 
     }
     function = switcher.get(argument, lambda: "Invalid Selection")
-    print("Enter a valid selection")
     function()
 
 
