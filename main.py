@@ -40,11 +40,15 @@ def salary_management():
                                                          {"_id": 0, "Salary": 1})["Salary"])
                 total = myAttendance.find_one({"Name": name, "Mobile": mobile})
                 list_present = total['Attendance']
-                present_occur = [sub['Present'] for sub in list_present]
-                total_presents = len(present_occur)
-                print(f"{name} was present for a total of {total_presents} days. ")
+                occur = 0
+                for x in list_present:
+                    if "Present" in x.keys():
+                        occur += 1
+                    if "Holiday" in x.keys():
+                        occur += 1
+                print(f"{name} was present for a total of {occur} day(s). ")
                 per_day_salary = salary_decided / 30
-                sum_salary = per_day_salary * total_presents
+                sum_salary = per_day_salary * occur
                 print(f"Total salary of {name} is : ", sum_salary)
             except KeyError:
                 print("Please Enter Employer Salary First.")
@@ -55,6 +59,7 @@ def salary_management():
         sub_menu_salary()
     except ValueError:
         print("Enter a valid selection. ")
+
 
 def attendance_management():
     def sub_menu_attendance():
@@ -168,14 +173,11 @@ def holiday_management():
         day, month, year = map(int, input(f"Enter Date for {title} in DD/MM/YY: ").split('/'))
         new_holiday = {"Title": title, "Date": datetime.datetime(year, month, day).strftime("%y/%m/%d"), "Month": month}
         myHoliday.insert_one(new_holiday)
-
-        # my_data = myAttendance.find({})
-        # for x in my_data:
-        #     list_data = x['Attendance']
-        # list_data.append({value: (datetime.datetime(year, month, day).strftime("%y/%m/%d"))})
-        # myAttendance.update_many({"Name": name, "Mobile": mobile}, {"$set": {"Attendance": list_data}})
-        # print(f"Attendance of {name} for {day}/{month}/{year} as {value} is successfully added.")
-
+        attendance = myAttendance.find({})
+        for x in attendance:
+            list_data = x["Attendance"]
+            list_data.append({"Holiday": datetime.datetime(year, month, day).strftime("%y/%m/%d")})
+            myAttendance.update_many({}, {"$set": {"Attendance": list_data}})
         print("Holiday Successfully Added!")
 
     def display_holiday():
