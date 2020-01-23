@@ -85,7 +85,7 @@ def attendance_management():
                     {value: datetime.datetime(year, month, day).strftime("%y/%m/%d")}]})
                 print(f"Attendance of {name} for {day}/{month}/{year} as {value} is successfully added.")
             else:
-                my_data = myAttendance.find_one({"Name": "Jimil", "Mobile": "7567438095"})
+                my_data = myAttendance.find_one({"Name": name, "Mobile": mobile})
                 list_data = my_data['Attendance']
                 list_data.append({value: (datetime.datetime(year, month, day).strftime("%y/%m/%d"))})
                 myAttendance.update_many({"Name": name, "Mobile": mobile}, {"$set": {"Attendance": list_data}})
