@@ -43,12 +43,13 @@ def salary_management():
                 present_occur = [sub['Present'] for sub in list_present]
                 total_presents = len(present_occur)
                 print(f"{name} was present for a total of {total_presents} days. ")
-
                 per_day_salary = salary_decided / 30
                 sum_salary = per_day_salary * total_presents
                 print(f"Total salary of {name} is : ", sum_salary)
             except KeyError:
                 print("Please Enter Employer Salary First.")
+            except TypeError:
+                print("Please Add Attendance of Employee to display Current Salary")
     sub_menu_salary()
 
 
