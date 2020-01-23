@@ -35,18 +35,20 @@ def salary_management():
         if employee_exists is False:
             print("Please add the employee first.")
         else:
-            salary_decided = int(myEmployee.find_one({"Name": name, "Mobile": mobile},
-                                                     {"_id": 0, "Salary": 1})["Salary"])
-            total = myAttendance.find_one({"Name": name, "Mobile": mobile})
-            list_present = total['Attendance']
-            present_occur = [sub['Present'] for sub in list_present]
-            total_presents = len(present_occur)
-            print(f"{name} was present for a total of {total_presents} days. ")
+            try:
+                salary_decided = int(myEmployee.find_one({"Name": name, "Mobile": mobile},
+                                                         {"_id": 0, "Salary": 1})["Salary"])
+                total = myAttendance.find_one({"Name": name, "Mobile": mobile})
+                list_present = total['Attendance']
+                present_occur = [sub['Present'] for sub in list_present]
+                total_presents = len(present_occur)
+                print(f"{name} was present for a total of {total_presents} days. ")
 
-            per_day_salary = salary_decided / 30
-            sum_salary = per_day_salary * total_presents
-            print(f"Total salary of {name} is : ", sum_salary)
-
+                per_day_salary = salary_decided / 30
+                sum_salary = per_day_salary * total_presents
+                print(f"Total salary of {name} is : ", sum_salary)
+            except KeyError:
+                print("Please Enter Employer Salary First.")
     sub_menu_salary()
 
 
