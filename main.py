@@ -50,8 +50,11 @@ def salary_management():
                 print("Please Enter Employer Salary First.")
             except TypeError:
                 print("Please Add Attendance of Employee to display Current Salary")
-    sub_menu_salary()
 
+    try:
+        sub_menu_salary()
+    except ValueError:
+        print("Enter a valid selection. ")
 
 def attendance_management():
     def sub_menu_attendance():
@@ -105,11 +108,14 @@ def attendance_management():
             for x in myAttendance.find({"Name": name, "Mobile": mobile}):
                 print(x["Attendance"])
 
-    sub_menu_attendance()
+    try:
+        sub_menu_attendance()
+    except ValueError:
+        print("Enter a valid selection. ")
 
 
 def annual_functions_management():
-    def sub_menu_hol():
+    def sub_menu_function():
         print("\n############# ANNUAL FUNCTIONS MANAGEMENT ################")
         print("1. Add New Function")
         print("2. Display All Functions")
@@ -134,7 +140,10 @@ def annual_functions_management():
         for x in myFunctions.find():
             print(x['Title'])
 
-    sub_menu_hol()
+    try:
+        sub_menu_function()
+    except ValueError:
+        print("Enter a valid selection. ")
 
 
 def holiday_management():
@@ -157,8 +166,16 @@ def holiday_management():
     def add_holiday():
         title = input("Enter holiday title: ")
         day, month, year = map(int, input(f"Enter Date for {title} in DD/MM/YY: ").split('/'))
-        new_holiday = {"Title": title, "Date": datetime.datetime(year, month, day)}
+        new_holiday = {"Title": title, "Date": datetime.datetime(year, month, day), "Month": month}
         myHoliday.insert_one(new_holiday)
+
+        # my_data = myAttendance.find({})
+        # for x in my_data:
+        #     list_data = x['Attendance']
+        # list_data.append({value: (datetime.datetime(year, month, day).strftime("%y/%m/%d"))})
+        # myAttendance.update_many({"Name": name, "Mobile": mobile}, {"$set": {"Attendance": list_data}})
+        # print(f"Attendance of {name} for {day}/{month}/{year} as {value} is successfully added.")
+
         print("Holiday Successfully Added!")
 
     def display_holiday():
@@ -172,7 +189,10 @@ def holiday_management():
         for x in myHoliday.find({"Month": month}):
             print(x['Date'].date(), " : ", x['Title'], sep="")
 
-    sub_menu_hol()
+    try:
+        sub_menu_hol()
+    except ValueError:
+        print("Enter a valid selection. ")
 
 
 def add_employee():
@@ -246,6 +266,7 @@ def switch_example(argument):
 
     }
     function = switcher.get(argument, lambda: "Invalid Selection")
+    print("Enter a valid selection")
     function()
 
 
@@ -257,4 +278,7 @@ if __name__ == "__main__":
     myHoliday = myDB['Holiday_List']
     myAttendance = myDB['Employee_Attendance']
     while True:
-        menu()
+        try:
+            menu()
+        except ValueError:
+            print("Enter a valid selection. ")
